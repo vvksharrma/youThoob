@@ -14,7 +14,7 @@ export const Layout = ({ children }) => {
   const [sidebar, toggleSidebar] = useState(false)
 
   const handleToggleSidebar = () => toggleSidebar(value => !value)
-
+console.log(process.env.REACT_APP_YT_BASE_URL);
   return (
      <>
         <Header handleToggleSidebar={handleToggleSidebar} />
