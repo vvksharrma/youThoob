@@ -1,24 +1,56 @@
-import logo from './logo.svg';
-import './App.css';
+import { Container } from 'react-bootstrap';
+import Header from './components/header/Header';
+import Sidebar from './components/sidebar/Sidebar';
+import HomeScreen from './screens/homeScreen/HomeScreen'
+import './app.scss'
+import { useEffect, useState } from 'react';
+import LoginScreen from './screens/loginScreen/LoginScreen';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux';
+import WatchScreen from './screens/watchScreen/WatchScreen';
 
-function App() {
+
+export const Layout = ({ children }) => {
+  const [sidebar, toggleSidebar] = useState(false)
+
+  const handleToggleSidebar = () => toggleSidebar(value => !value)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+     <>
+        <Header handleToggleSidebar={handleToggleSidebar} />
+        <div className='app_container'>
+           <Sidebar
+              sidebar={sidebar}
+              handleToggleSidebar={handleToggleSidebar}
+           />
+           <Container fluid className='app__main '>
+              {children}
+           </Container>
+        </div>
+     </>
+  )
+}
+
+const App=()=> {
+   // const navigate=useNavigate()
+   // const{accessToken,loading}=useSelector(state=>state.auth);
+
+//    useEffect(()=>{
+//       if(!loading 
+//          // && !accessToken
+//          ){
+//          navigate("/auth")
+//       }
+// },[accessToken,loading,navigate])
+
+  return (
+    <Routes>
+         <Route path='/' exact element={<Layout><HomeScreen /></Layout>} />
+         <Route path='/auth' element={<LoginScreen/>}/>
+         
+         <Route path='*' element={<Navigate to='/' replace/>} />
+         <Route path='/watch/:id' exact element={<Layout><WatchScreen /></Layout>} />
+      </Routes>
   );
 }
 
